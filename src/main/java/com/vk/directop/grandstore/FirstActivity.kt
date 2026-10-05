@@ -1,6 +1,7 @@
 package com.vk.directop.grandstore
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -35,8 +36,17 @@ class FirstActivity : AppCompatActivity() {
         }
 
         btnDial.setOnClickListener {
-            Log.d("MyTag", "btn Dial")
-        }
+            val phoneNumber = editText.text.toString()
 
+            if (phoneNumber.isNotEmpty()) {
+                val callIntent = Intent(Intent.ACTION_DIAL).apply {
+                    data = Uri.parse("tel:$phoneNumber")
+                }
+
+                startActivity(callIntent)
+            } else {
+                editText.error = "Введите номер телефона"
+            }
+        }
     }
 }
