@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GrandStore</string>
+    <string name="edit_text_hint">Enter text and you will see it on the next Second Screen</string>
 </resources>
