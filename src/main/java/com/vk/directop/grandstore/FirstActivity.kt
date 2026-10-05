@@ -1,6 +1,10 @@
 package com.vk.directop.grandstore
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,5 +20,23 @@ class FirstActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val editText = findViewById<EditText>(R.id.et)
+        val btnOpenSecond = findViewById<Button>(R.id.btnSecondActivity)
+        val btnDial = findViewById<Button>(R.id.buttonDial)
+
+        btnOpenSecond.setOnClickListener {
+            val textToSend = editText.text.toString()
+
+            val intent = Intent(this, SecondActivity::class.java).apply {
+                putExtra("EXTRA_TEXT", textToSend)
+            }
+            startActivity(intent)
+        }
+
+        btnDial.setOnClickListener {
+            Log.d("MyTag", "btn Dial")
+        }
+
     }
 }
