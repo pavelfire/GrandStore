@@ -40,7 +40,9 @@ class FirstActivity : AppCompatActivity() {
         btnDial.setOnClickListener {
             val phoneNumber = editText.text.toString().trim()
 
-            if (phoneNumber.isNotEmpty()) {
+            val digitsOnlyRegex = "^[0-9]+$".toRegex()
+
+            if (phoneNumber.isNotEmpty() && phoneNumber.matches(digitsOnlyRegex)) {
                 val callIntent = Intent(Intent.ACTION_DIAL).apply {
                     data = Uri.parse("tel:$phoneNumber")
                 }
