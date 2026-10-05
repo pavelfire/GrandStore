@@ -5,4 +5,9 @@
     <string name="btn_share_text">Поделиться текстом</string>
     <string name="button_dial">button Dial</string>
     <string name="go_to_second_activity">go to Second Activity</string>
+    <string name="error_no_dialer_app">На вашем устройстве нет приложения для совершения звонков</string>
+    <string name="error_no_share_app">Не найдены приложения, через которые можно отправить текст</string>
+    <string name="error_invalid_phone">Введите корректный номер (только цифры)</string>
+    <string name="error_empty_field">Поле не может быть пустым</string>
+    <string name="share_by">"Поделиться через..."</string>
 </resources>

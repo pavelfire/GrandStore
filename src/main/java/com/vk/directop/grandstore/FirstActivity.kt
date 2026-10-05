@@ -54,12 +54,12 @@ class FirstActivity : AppCompatActivity() {
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(
                         this,
-                        "На вашем устройстве нет приложения для совершения звонков",
+                        R.string.error_no_dialer_app,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             } else {
-                editText.error = "Введите номер телефона"
+                editText.error = getText(R.string.error_invalid_phone)
             }
         }
 
@@ -72,19 +72,19 @@ class FirstActivity : AppCompatActivity() {
                     putExtra(Intent.EXTRA_TEXT, message)
                 }
 
-                val chooserIntent = Intent.createChooser(sendIntent, "Поделиться через...")
+                val chooserIntent = Intent.createChooser(sendIntent, getText(R.string.share_by))
 
                 try {
                     startActivity(chooserIntent)
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(
                         this,
-                        "Не найдены приложения, через которые можно отправить текст",
+                        R.string.error_no_share_app,
                         Toast.LENGTH_LONG
                     ).show()
                 }
             } else {
-                editText.error = "Введите текст для отправки"
+                editText.error = getText(R.string.error_empty_field)
             }
         }
     }
