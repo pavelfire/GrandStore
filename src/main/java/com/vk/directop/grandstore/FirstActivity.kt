@@ -1,12 +1,14 @@
 package com.vk.directop.grandstore
 
 import android.R.attr.phoneNumber
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -47,7 +49,15 @@ class FirstActivity : AppCompatActivity() {
                     data = Uri.parse("tel:$phoneNumber")
                 }
 
-                startActivity(callIntent)
+                try {
+                    startActivity(callIntent)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(
+                        this,
+                        "На вашем устройстве нет приложения для совершения звонков",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             } else {
                 editText.error = "Введите номер телефона"
             }
@@ -57,18 +67,22 @@ class FirstActivity : AppCompatActivity() {
             val message = editText.text.toString()
 
             if (message.isNotEmpty()) {
-                // Создаем базовый Intent для отправки данных
                 val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                    // Указываем MIME-тип данных (простой текст)
                     type = "text/plain"
-                    // Добавляем сам текст
                     putExtra(Intent.EXTRA_TEXT, message)
                 }
 
-                // Оборачиваем в Chooser, чтобы принудительно показать системное меню выбора
                 val chooserIntent = Intent.createChooser(sendIntent, "Поделиться через...")
 
-                startActivity(chooserIntent)
+                try {
+                    startActivity(chooserIntent)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(
+                        this,
+                        "Не найдены приложения, через которые можно отправить текст",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             } else {
                 editText.error = "Введите текст для отправки"
             }
