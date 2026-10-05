@@ -1,5 +1,6 @@
 package com.vk.directop.grandstore
 
+import android.R.attr.phoneNumber
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +26,7 @@ class FirstActivity : AppCompatActivity() {
         val editText = findViewById<EditText>(R.id.et)
         val btnOpenSecond = findViewById<Button>(R.id.btnSecondActivity)
         val btnDial = findViewById<Button>(R.id.buttonDial)
+        val btnShare = findViewById<Button>(R.id.buttonShare)
 
         btnOpenSecond.setOnClickListener {
             val textToSend = editText.text.toString()
@@ -36,7 +38,7 @@ class FirstActivity : AppCompatActivity() {
         }
 
         btnDial.setOnClickListener {
-            val phoneNumber = editText.text.toString()
+            val phoneNumber = editText.text.toString().trim()
 
             if (phoneNumber.isNotEmpty()) {
                 val callIntent = Intent(Intent.ACTION_DIAL).apply {
@@ -46,6 +48,27 @@ class FirstActivity : AppCompatActivity() {
                 startActivity(callIntent)
             } else {
                 editText.error = "Введите номер телефона"
+            }
+        }
+
+        btnShare.setOnClickListener {
+            val message = editText.text.toString()
+
+            if (message.isNotEmpty()) {
+                // Создаем базовый Intent для отправки данных
+                val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                    // Указываем MIME-тип данных (простой текст)
+                    type = "text/plain"
+                    // Добавляем сам текст
+                    putExtra(Intent.EXTRA_TEXT, message)
+                }
+
+                // Оборачиваем в Chooser, чтобы принудительно показать системное меню выбора
+                val chooserIntent = Intent.createChooser(sendIntent, "Поделиться через...")
+
+                startActivity(chooserIntent)
+            } else {
+                editText.error = "Введите текст для отправки"
             }
         }
     }

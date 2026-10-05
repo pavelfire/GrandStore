@@ -2,4 +2,7 @@
     <string name="app_name">GrandStore</string>
     <string name="edit_text_hint">Enter text and you will see it on the next Second Screen</string>
     <string name="default_text">Type text in previous screen and here you will see it.</string>
+    <string name="btn_share_text">Поделиться текстом</string>
+    <string name="button_dial">button Dial</string>
+    <string name="go_to_second_activity">go to Second Activity</string>
 </resources>
