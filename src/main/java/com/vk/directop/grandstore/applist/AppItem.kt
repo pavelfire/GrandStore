@@ -1,6 +1,5 @@
 package com.vk.directop.grandstore.applist
 
-import android.R.attr.onClick
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,8 @@ import coil.compose.AsyncImage
 
 @Composable
 fun AppItem(
-    game: Game
+    game: Game,
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -41,7 +41,7 @@ fun AppItem(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
-        onClick = {}
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -93,10 +93,12 @@ fun AppItem(
 private fun AppItemPreview() {
     AppItem(
         Game(
+            id = "guild-of-heroes",
             title = "Гильдия Героев",
             description = "Это очень интересная игра у неё можно играть постоянно, залипательная, с друзьями и с ботами",
             category = "RPG",
             image = "https://www.film.ru/sites/default/files/styles/epsa_260x400/public/game/covers/1d84898b3a1fe0eeb0ac0fbb83cfff3c.jpg"
-        )
+        ),
+        onClick = {}
     )
 }
