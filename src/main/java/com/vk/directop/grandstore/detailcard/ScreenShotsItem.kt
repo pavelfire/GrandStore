@@ -22,7 +22,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
 @Composable
-fun ScreenShotsItem() {
+fun ScreenShotsItem(
+    imageUrl: String,
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -40,7 +42,7 @@ fun ScreenShotsItem() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             AsyncImage(
-                model = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+                model = imageUrl,
                 contentDescription = "Screenshot",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -49,7 +51,7 @@ fun ScreenShotsItem() {
                     .clip(RoundedCornerShape(16.dp)),
             )
             AsyncImage(
-                model = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+                model = imageUrl,
                 contentDescription = "Screenshot",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -58,7 +60,7 @@ fun ScreenShotsItem() {
                     .clip(RoundedCornerShape(16.dp)),
             )
             AsyncImage(
-                model = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+                model = imageUrl,
                 contentDescription = "Screenshot",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -67,7 +69,7 @@ fun ScreenShotsItem() {
                     .clip(RoundedCornerShape(16.dp)),
             )
             AsyncImage(
-                model = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+                model = imageUrl,
                 contentDescription = "Screenshot",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -82,6 +84,8 @@ fun ScreenShotsItem() {
 @Preview(showBackground = true)
 @Composable
 private fun ScreenShotsItemPreview() {
-    ScreenShotsItem()
+    ScreenShotsItem(
+        imageUrl = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1"
+    )
 }
 

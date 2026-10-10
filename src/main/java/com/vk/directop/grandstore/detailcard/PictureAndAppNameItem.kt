@@ -21,15 +21,19 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
 @Composable
-fun PictureAndAppNameItem() {
+fun PictureAndAppNameItem(
+    title: String,
+    category: String,
+    imageUrl: String,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         AsyncImage(
-            model = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
-            contentDescription = "App icon",
+            model = imageUrl,
+            contentDescription = title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(100.dp)
@@ -38,14 +42,14 @@ fun PictureAndAppNameItem() {
         )
         Spacer(Modifier.width(16.dp))
         Column(
-
+            modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Игры",
+                text = category,
                 color = Color.Gray
             )
             Text(
-                text = "Гильдия Героев: Экшен ММО РПГ",
+                text = title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp
             )
