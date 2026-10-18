@@ -20,10 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.vk.directop.grandstore.applist.GamesCatalog
 
 @Composable
 fun DetailRoute(
     onBack: () -> Unit,
+    onOpenAppList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = viewModel(),
 ) {
@@ -32,6 +34,7 @@ fun DetailRoute(
         viewModel.effects.collect { effect ->
             when (effect) {
                 DetailEffect.NavigateBack -> onBack()
+                DetailEffect.NavigateToAppList -> onOpenAppList()
             }
         }
     }
@@ -90,6 +93,11 @@ fun DetailCardScreen(
             color = Color.LightGray
         )
         DeveloperItem()
+        ShowcaseItem(
+            pages = state.showcasePages,
+            onAppClick = { onAction(DetailAction.OnShowcaseAppClick) },
+            modifier = Modifier.padding(top = 24.dp),
+        )
     }
 }
 
@@ -103,6 +111,7 @@ private fun DetailedCardScreenPreview() {
             description = "Легендарный рейд героев в Фэнтези РПГ.",
             category = "Игры",
             imageUrl = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+            showcasePages = GamesCatalog.showcasePages,
         ),
         onAction = {}
     )
