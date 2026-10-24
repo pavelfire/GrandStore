@@ -1,6 +1,9 @@
 package com.vk.directop.grandstore.applist
 
 object GamesCatalog {
+    const val SHOWCASE_PAGE_SIZE = 3
+    const val SHOWCASE_PAGE_COUNT = 3
+
     val games: List<Game> = listOf(
         Game(
             id = "resident-evil-requiem",
@@ -68,4 +71,8 @@ object GamesCatalog {
     )
 
     fun find(id: String): Game? = games.find { it.id == id }
+
+    val showcasePages: List<List<Game>> = games
+        .take(SHOWCASE_PAGE_SIZE * SHOWCASE_PAGE_COUNT)
+        .chunked(SHOWCASE_PAGE_SIZE)
 }

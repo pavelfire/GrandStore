@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.vk.directop.grandstore.applist.Game
 import com.vk.directop.grandstore.applist.GamesCatalog
 import com.vk.directop.grandstore.navigation.DetailDestination
 import kotlinx.coroutines.channels.Channel
@@ -24,6 +25,7 @@ data class DetailState(
     val isDescriptionExpanded: Boolean = false,
     val isInstalled: Boolean = false,
     val isMissing: Boolean = false,
+    val showcasePages: List<List<Game>> = emptyList(),
 )
 
 sealed interface DetailAction {
@@ -31,10 +33,12 @@ sealed interface DetailAction {
     data object OnInstallClick : DetailAction
     data object OnShareClick : DetailAction
     data object OnDescriptionClick : DetailAction
+    data object OnShowcaseAppClick : DetailAction
 }
 
 sealed interface DetailEffect {
     data object NavigateBack : DetailEffect
+    data object NavigateToAppList : DetailEffect
 }
 
 class DetailViewModel(
@@ -59,18 +63,27 @@ class DetailViewModel(
             DetailAction.OnDescriptionClick -> _state.update {
                 it.copy(isDescriptionExpanded = !it.isDescriptionExpanded)
             }
+            DetailAction.OnShowcaseAppClick -> viewModelScope.launch {
+                _effects.send(DetailEffect.NavigateToAppList)
+            }
         }
     }
 
     private fun stateFor(gameId: String): DetailState {
+        val showcasePages = GamesCatalog.showcasePages
         val game = GamesCatalog.find(gameId)
-            ?: return DetailState(gameId = gameId, isMissing = true)
+            ?: return DetailState(
+                gameId = gameId,
+                isMissing = true,
+                showcasePages = showcasePages,
+            )
         return DetailState(
             gameId = game.id,
             title = game.title,
             description = game.description,
             category = game.category,
             imageUrl = game.image,
+            showcasePages = showcasePages,
         )
     }
 }

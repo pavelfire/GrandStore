@@ -27,7 +27,10 @@ fun GrandStoreNavHost(
         }
         composable<DetailDestination> {
             DetailRoute(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onOpenAppList = {
+                    navController.popBackStack(AppListDestination, inclusive = false)
+                },
             )
         }
     }
