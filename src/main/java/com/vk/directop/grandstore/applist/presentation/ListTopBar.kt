@@ -1,4 +1,4 @@
-package com.vk.directop.grandstore.applist
+package com.vk.directop.grandstore.applist.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
