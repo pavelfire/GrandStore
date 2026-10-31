@@ -1,11 +1,12 @@
-package com.vk.directop.grandstore.detailcard
+package com.vk.directop.grandstore.detailcard.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vk.directop.grandstore.applist.Game
-import com.vk.directop.grandstore.applist.GamesCatalog
+import com.vk.directop.grandstore.detailcard.data.repository.GamesRepositoryImpl
+import com.vk.directop.grandstore.detailcard.domain.model.Game
+import com.vk.directop.grandstore.detailcard.domain.repository.GamesRepository
 import com.vk.directop.grandstore.navigation.DetailDestination
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -45,6 +46,8 @@ class DetailViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
+    private val gamesRepository: GamesRepository = GamesRepositoryImpl()
+
     private val destination = savedStateHandle.toRoute<DetailDestination>()
 
     private val _state = MutableStateFlow(stateFor(destination.gameId))
@@ -70,8 +73,8 @@ class DetailViewModel(
     }
 
     private fun stateFor(gameId: String): DetailState {
-        val showcasePages = GamesCatalog.showcasePages
-        val game = GamesCatalog.find(gameId)
+        val showcasePages = gamesRepository.getShowcasePages()
+        val game = gamesRepository.getGameById(gameId)
             ?: return DetailState(
                 gameId = gameId,
                 isMissing = true,

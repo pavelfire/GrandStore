@@ -1,4 +1,4 @@
-package com.vk.directop.grandstore.applist
+package com.vk.directop.grandstore.applist.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,10 @@ import coil.compose.AsyncImage
 
 @Composable
 fun AppItem(
-    game: Game,
+    title: String,
+    description: String,
+    category: String,
+    image: String,
     onClick: () -> Unit,
 ) {
     Card(
@@ -49,7 +52,7 @@ fun AppItem(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             AsyncImage(
-                model = game.image,
+                model = image,
                 contentDescription = "App icon",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -63,7 +66,7 @@ fun AppItem(
 
             ) {
                 Text(
-                    text = game.title,
+                    text = title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     maxLines = 1,
@@ -71,7 +74,7 @@ fun AppItem(
                 )
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    text = game.description,
+                    text = description,
                     fontWeight = FontWeight.Normal,
                     fontSize = 12.sp,
                     maxLines = 3,
@@ -79,7 +82,7 @@ fun AppItem(
                 )
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    text = game.category,
+                    text = category,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp
                 )
@@ -92,13 +95,10 @@ fun AppItem(
 @Composable
 private fun AppItemPreview() {
     AppItem(
-        Game(
-            id = "guild-of-heroes",
-            title = "Гильдия Героев",
-            description = "Это очень интересная игра у неё можно играть постоянно, залипательная, с друзьями и с ботами",
-            category = "RPG",
-            image = "https://www.film.ru/sites/default/files/styles/epsa_260x400/public/game/covers/1d84898b3a1fe0eeb0ac0fbb83cfff3c.jpg"
-        ),
-        onClick = {}
+        title = "Гильдия Героев",
+        description = "Это очень интересная игра у неё можно играть постоянно, залипательная, с друзьями и с ботами",
+        category = "RPG",
+        image = "https://www.film.ru/sites/default/files/styles/epsa_260x400/public/game/covers/1d84898b3a1fe0eeb0ac0fbb83cfff3c.jpg",
+        onClick = {},
     )
 }

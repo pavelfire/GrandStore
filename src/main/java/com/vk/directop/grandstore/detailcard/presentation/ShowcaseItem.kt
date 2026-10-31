@@ -1,4 +1,4 @@
-package com.vk.directop.grandstore.detailcard
+package com.vk.directop.grandstore.detailcard.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,9 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vk.directop.grandstore.applist.AppItem
-import com.vk.directop.grandstore.applist.Game
-import com.vk.directop.grandstore.applist.GamesCatalog
+import com.vk.directop.grandstore.applist.presentation.AppItem
+import com.vk.directop.grandstore.detailcard.domain.model.Game
 
 @Composable
 fun ShowcaseItem(
@@ -57,7 +56,10 @@ private fun ShowcasePage(
     ) {
         games.forEach { game ->
             AppItem(
-                game = game,
+                title = game.title,
+                description = game.description,
+                category = game.category,
+                image = game.image,
                 onClick = onAppClick,
             )
         }
@@ -68,7 +70,17 @@ private fun ShowcasePage(
 @Composable
 private fun ShowcaseItemPreview() {
     ShowcaseItem(
-        pages = GamesCatalog.showcasePages,
+        pages = listOf(
+            listOf(
+                Game(
+                    id = "guild-of-heroes",
+                    title = "Гильдия Героев",
+                    description = "Это очень интересная игра",
+                    category = "RPG",
+                    image = "https://www.film.ru/sites/default/files/styles/epsa_260x400/public/game/covers/1d84898b3a1fe0eeb0ac0fbb83cfff3c.jpg",
+                ),
+            ),
+        ),
         onAppClick = {},
     )
 }

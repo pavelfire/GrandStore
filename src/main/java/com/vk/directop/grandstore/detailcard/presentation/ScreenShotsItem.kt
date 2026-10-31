@@ -1,4 +1,4 @@
-package com.vk.directop.grandstore.detailcard
+package com.vk.directop.grandstore.detailcard.presentation
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement

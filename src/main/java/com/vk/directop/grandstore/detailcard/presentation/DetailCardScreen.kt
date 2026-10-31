@@ -1,4 +1,4 @@
-package com.vk.directop.grandstore.detailcard
+package com.vk.directop.grandstore.detailcard.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.vk.directop.grandstore.applist.GamesCatalog
+import com.vk.directop.grandstore.detailcard.domain.model.Game
 
 @Composable
 fun DetailRoute(
@@ -111,7 +111,17 @@ private fun DetailedCardScreenPreview() {
             description = "Легендарный рейд героев в Фэнтези РПГ.",
             category = "Игры",
             imageUrl = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
-            showcasePages = GamesCatalog.showcasePages,
+            showcasePages = listOf(
+                listOf(
+                    Game(
+                        id = "guild-of-heroes",
+                        title = "Гильдия Героев",
+                        description = "Легендарный рейд героев в Фэнтези РПГ.",
+                        category = "Игры",
+                        image = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+                    ),
+                ),
+            ),
         ),
         onAction = {}
     )

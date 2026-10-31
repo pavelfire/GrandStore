@@ -1,4 +1,4 @@
-package com.vk.directop.grandstore.detailcard
+package com.vk.directop.grandstore.detailcard.presentation
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
