@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.vk.directop.grandstore.applist.AppListRoute
-import com.vk.directop.grandstore.detailcard.DetailRoute
+import com.vk.directop.grandstore.detailcard.presentation.DetailRoute
 
 @Composable
 fun GrandStoreNavHost(
