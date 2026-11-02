@@ -4,10 +4,11 @@ import com.vk.directop.grandstore.detailcard.data.mapper.GameMapper
 import com.vk.directop.grandstore.detailcard.data.source.HardcodedGamesDataSource
 import com.vk.directop.grandstore.detailcard.domain.model.Game
 import com.vk.directop.grandstore.detailcard.domain.repository.GamesRepository
+import javax.inject.Inject
 
-class GamesRepositoryImpl(
-    private val dataSource: HardcodedGamesDataSource = HardcodedGamesDataSource(),
-    private val mapper: GameMapper = GameMapper(),
+class GamesRepositoryImpl @Inject constructor(
+    private val dataSource: HardcodedGamesDataSource,
+    private val mapper: GameMapper,
 ) : GamesRepository {
 
     override fun getGameById(id: String): Game? =
