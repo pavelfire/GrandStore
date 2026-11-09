@@ -1,8 +1,11 @@
 package com.vk.directop.grandstore.applist.data.source
 
 import com.vk.directop.grandstore.applist.data.dto.GameDto
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class HardcodedGamesDataSource {
+@Singleton
+class HardcodedGamesDataSource @Inject constructor() {
     fun getGames(): List<GameDto> = games
 
     private val games: List<GameDto> = listOf(

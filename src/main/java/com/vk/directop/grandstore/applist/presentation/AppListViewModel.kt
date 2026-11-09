@@ -2,9 +2,10 @@ package com.vk.directop.grandstore.applist.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vk.directop.grandstore.applist.data.repository.GamesRepositoryImpl
 import com.vk.directop.grandstore.applist.domain.model.Game
 import com.vk.directop.grandstore.applist.domain.repository.GamesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,9 +26,10 @@ sealed interface AppListEffect {
     data class OpenDetail(val gameId: String) : AppListEffect
 }
 
-class AppListViewModel : ViewModel() {
-
-    private val gamesRepository: GamesRepository = GamesRepositoryImpl()
+@HiltViewModel
+class AppListViewModel @Inject constructor(
+    private val gamesRepository: GamesRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(AppListState(games = gamesRepository.getGames()))
     val state: StateFlow<AppListState> = _state.asStateFlow()

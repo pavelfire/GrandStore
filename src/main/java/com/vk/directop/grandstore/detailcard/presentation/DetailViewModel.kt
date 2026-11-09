@@ -4,10 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.vk.directop.grandstore.detailcard.data.repository.GamesRepositoryImpl
 import com.vk.directop.grandstore.detailcard.domain.model.Game
 import com.vk.directop.grandstore.detailcard.domain.repository.GamesRepository
 import com.vk.directop.grandstore.navigation.DetailDestination
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,11 +43,11 @@ sealed interface DetailEffect {
     data object NavigateToAppList : DetailEffect
 }
 
-class DetailViewModel(
+@HiltViewModel
+class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val gamesRepository: GamesRepository,
 ) : ViewModel() {
-
-    private val gamesRepository: GamesRepository = GamesRepositoryImpl()
 
     private val destination = savedStateHandle.toRoute<DetailDestination>()
 
