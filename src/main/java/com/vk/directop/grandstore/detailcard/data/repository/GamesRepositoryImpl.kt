@@ -1,7 +1,10 @@
 package com.vk.directop.grandstore.detailcard.data.repository
 
+import com.vk.directop.grandstore.data.remote.CatalogApi
+import com.vk.directop.grandstore.detailcard.data.mapper.AppDetailsMapper
 import com.vk.directop.grandstore.detailcard.data.mapper.GameMapper
 import com.vk.directop.grandstore.detailcard.data.source.HardcodedGamesDataSource
+import com.vk.directop.grandstore.detailcard.domain.model.AppDetails
 import com.vk.directop.grandstore.detailcard.domain.model.Game
 import com.vk.directop.grandstore.detailcard.domain.repository.GamesRepository
 import javax.inject.Inject
@@ -9,7 +12,12 @@ import javax.inject.Inject
 class GamesRepositoryImpl @Inject constructor(
     private val dataSource: HardcodedGamesDataSource,
     private val mapper: GameMapper,
+    private val api: CatalogApi,
+    private val appDetailsMapper: AppDetailsMapper,
 ) : GamesRepository {
+
+    override suspend fun getAppDetails(id: String): AppDetails =
+        appDetailsMapper.toDomain(api.getApp(id))
 
     override fun getGameById(id: String): Game? =
         games().find { it.id == id }

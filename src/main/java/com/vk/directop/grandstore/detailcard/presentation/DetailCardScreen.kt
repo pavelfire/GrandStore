@@ -1,5 +1,7 @@
 package com.vk.directop.grandstore.detailcard.presentation
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,11 +11,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,21 +59,58 @@ fun DetailCardScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .padding(16.dp),
     ) {
         CardColorsTopBar(
             onBackClick = { onAction(DetailAction.OnBackClick) },
             onShareClick = { onAction(DetailAction.OnShareClick) },
         )
-        if (state.isMissing) {
-            Text(text = "Игра не найдена")
-            return@Column
+        val errorMessage = state.errorMessage
+        when {
+            state.isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+                return@Column
+            }
+            state.isMissing -> {
+                Text(text = "Игра не найдена")
+                return@Column
+            }
+            errorMessage != null -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(text = errorMessage)
+                    TextButton(onClick = { onAction(DetailAction.OnRetryClick) }) {
+                        Text(text = "Повторить")
+                    }
+                }
+                return@Column
+            }
         }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
+        ) {
         PictureAndAppNameItem(
             title = state.title,
             category = state.category,
             imageUrl = state.imageUrl,
+            developer = state.developer,
+            ageRating = "${state.ageRating}+",
+            size = formatSize(state.sizeMb),
         )
         Button(
             onClick = { onAction(DetailAction.OnInstallClick) },
@@ -81,7 +123,7 @@ fun DetailCardScreen(
         ) {
             Text(text = if (state.isInstalled) "Установлено" else "Установить")
         }
-        ScreenShotsItem(imageUrl = state.imageUrl)
+        ScreenShotsItem(screenshotUrls = state.screenshotUrls)
         AppDescriptionItem(
             description = state.description,
             isExpanded = state.isDescriptionExpanded,
@@ -92,12 +134,13 @@ fun DetailCardScreen(
             thickness = 1.dp,
             color = Color.LightGray
         )
-        DeveloperItem()
+        DeveloperItem(developer = state.developer)
         ShowcaseItem(
             pages = state.showcasePages,
             onAppClick = { onAction(DetailAction.OnShowcaseAppClick) },
             modifier = Modifier.padding(top = 24.dp),
         )
+        }
     }
 }
 
@@ -111,6 +154,12 @@ private fun DetailedCardScreenPreview() {
             description = "Легендарный рейд героев в Фэнтези РПГ.",
             category = "Игры",
             imageUrl = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+            developer = "VK Play",
+            ageRating = 12,
+            sizeMb = 224.0,
+            screenshotUrls = listOf(
+                "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+            ),
             showcasePages = listOf(
                 listOf(
                     Game(
@@ -125,4 +174,9 @@ private fun DetailedCardScreenPreview() {
         ),
         onAction = {}
     )
+}
+
+private fun formatSize(sizeMb: Double): String {
+    val text = if (sizeMb % 1.0 == 0.0) sizeMb.toInt().toString() else sizeMb.toString()
+    return "$text MB"
 }

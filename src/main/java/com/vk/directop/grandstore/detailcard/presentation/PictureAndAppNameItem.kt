@@ -26,6 +26,9 @@ fun PictureAndAppNameItem(
     title: String,
     category: String,
     imageUrl: String,
+    developer: String,
+    ageRating: String,
+    size: String,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -55,7 +58,7 @@ fun PictureAndAppNameItem(
                 fontSize = 22.sp
             )
             Text(
-                text = "VK Play",
+                text = developer,
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp
             )
@@ -63,7 +66,7 @@ fun PictureAndAppNameItem(
             Row() {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "12+",
+                        text = ageRating,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
@@ -75,7 +78,7 @@ fun PictureAndAppNameItem(
                 Spacer(Modifier.width(16.dp))
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "224 MB",
+                        text = size,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
@@ -95,6 +98,9 @@ private fun PictureAndAppNameItemPreview() {
     PictureAndAppNameItem(
         title = "Super Game",
         category = "Game",
-        imageUrl = "url"
+        imageUrl = "url",
+        developer = "QuickSoft",
+        ageRating = "3+",
+        size = "8.2 MB",
     )
 }

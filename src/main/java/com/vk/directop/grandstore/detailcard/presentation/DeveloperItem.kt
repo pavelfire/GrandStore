@@ -17,7 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun DeveloperItem() {
+fun DeveloperItem(
+    developer: String,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -25,7 +27,7 @@ fun DeveloperItem() {
     ) {
         Column() {
             Text(
-                text = "VK Play",
+                text = developer,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
@@ -46,5 +48,5 @@ fun DeveloperItem() {
 @Preview(showBackground = true)
 @Composable
 private fun DeveloperItemPreview() {
-    DeveloperItem()
+    DeveloperItem(developer = "QuickSoft")
 }

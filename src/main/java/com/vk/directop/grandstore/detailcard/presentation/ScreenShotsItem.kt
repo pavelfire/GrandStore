@@ -23,7 +23,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun ScreenShotsItem(
-    imageUrl: String,
+    screenshotUrls: List<String>,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -41,42 +41,17 @@ fun ScreenShotsItem(
                 .horizontalScroll(scrollState),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "Screenshot",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-            )
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "Screenshot",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-            )
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "Screenshot",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-            )
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "Screenshot",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(240.dp)
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-            )
+            screenshotUrls.forEach { url ->
+                AsyncImage(
+                    model = url,
+                    contentDescription = "Screenshot",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(240.dp)
+                        .height(140.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                )
+            }
         }
     }
 }
@@ -85,7 +60,9 @@ fun ScreenShotsItem(
 @Composable
 private fun ScreenShotsItemPreview() {
     ScreenShotsItem(
-        imageUrl = "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1"
+        screenshotUrls = listOf(
+            "https://i0.wp.com/dictionaryblog.cambridge.org/wp-content/uploads/2026/09/climate.jpg?ssl=1",
+        ),
     )
 }
 
