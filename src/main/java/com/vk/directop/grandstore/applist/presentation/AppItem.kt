@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import java.util.Locale
 
 @Composable
 fun AppItem(
@@ -32,6 +37,7 @@ fun AppItem(
     category: String,
     image: String,
     onClick: () -> Unit,
+    rating: Float? = null,
 ) {
     Card(
         modifier = Modifier
@@ -63,15 +69,37 @@ fun AppItem(
             )
             Spacer(Modifier.width(16.dp))
             Column(
-
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 12.dp),
             ) {
-                Text(
-                    text = title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = title,
+                        modifier = Modifier.weight(1f),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (rating != null) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "Рейтинг",
+                            tint = Color(0xFFF5A623),
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Text(
+                            text = String.format(Locale.US, "%.1f", rating),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                        )
+                    }
+                }
                 Spacer(Modifier.height(10.dp))
                 Text(
                     text = description,
@@ -99,6 +127,7 @@ private fun AppItemPreview() {
         description = "Это очень интересная игра у неё можно играть постоянно, залипательная, с друзьями и с ботами",
         category = "RPG",
         image = "https://www.film.ru/sites/default/files/styles/epsa_260x400/public/game/covers/1d84898b3a1fe0eeb0ac0fbb83cfff3c.jpg",
+        rating = 4.6f,
         onClick = {},
     )
 }

@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -112,6 +113,7 @@ fun DetailCardScreen(
             ageRating = "${state.ageRating}+",
             size = formatSize(state.sizeMb),
         )
+        val installState = state.installState
         Button(
             onClick = { onAction(DetailAction.OnInstallClick) },
             modifier = Modifier.fillMaxWidth(),
@@ -121,7 +123,25 @@ fun DetailCardScreen(
                 contentColor = Color.White
             )
         ) {
-            Text(text = if (state.isInstalled) "Установлено" else "Установить")
+            Text(
+                text = when (installState) {
+                    InstallState.NotInstalled -> "Установить"
+                    is InstallState.Installing -> "Отменить"
+                    InstallState.Installed -> "Установлено"
+                }
+            )
+        }
+        if (installState is InstallState.Installing) {
+            Text(
+                text = "${installState.progress}%",
+                modifier = Modifier.padding(top = 8.dp),
+            )
+            LinearProgressIndicator(
+                progress = { installState.progress / 100f },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+            )
         }
         ScreenShotsItem(screenshotUrls = state.screenshotUrls)
         AppDescriptionItem(

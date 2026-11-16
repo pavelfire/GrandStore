@@ -9,8 +9,12 @@ import com.vk.directop.grandstore.detailcard.domain.repository.GamesRepository
 import com.vk.directop.grandstore.navigation.DetailDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +23,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+
+sealed interface InstallState {
+    data object NotInstalled : InstallState
+    data class Installing(val progress: Int) : InstallState
+    data object Installed : InstallState
+}
 
 data class DetailState(
     val gameId: String = "",
@@ -31,7 +41,7 @@ data class DetailState(
     val sizeMb: Double = 0.0,
     val screenshotUrls: List<String> = emptyList(),
     val isDescriptionExpanded: Boolean = false,
-    val isInstalled: Boolean = false,
+    val installState: InstallState = InstallState.NotInstalled,
     val isLoading: Boolean = false,
     val isMissing: Boolean = false,
     val errorMessage: String? = null,
@@ -68,6 +78,8 @@ class DetailViewModel @Inject constructor(
     private val _effects = Channel<DetailEffect>(Channel.BUFFERED)
     val effects: Flow<DetailEffect> = _effects.receiveAsFlow()
 
+    private var installJob: Job? = null
+
     init {
         loadDetails(destination.gameId)
     }
@@ -77,7 +89,7 @@ class DetailViewModel @Inject constructor(
             DetailAction.OnBackClick -> viewModelScope.launch {
                 _effects.send(DetailEffect.NavigateBack)
             }
-            DetailAction.OnInstallClick -> _state.update { it.copy(isInstalled = !it.isInstalled) }
+            DetailAction.OnInstallClick -> onInstallClick()
             DetailAction.OnShareClick -> Unit
             DetailAction.OnDescriptionClick -> _state.update {
                 it.copy(isDescriptionExpanded = !it.isDescriptionExpanded)
@@ -89,10 +101,62 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    private fun onInstallClick() {
+        val current = _state.value
+        if (current.isLoading || current.isMissing || current.errorMessage != null) return
+
+        if (current.installState is InstallState.Installing) {
+            installJob?.cancel()
+            _state.update { it.copy(installState = InstallState.NotInstalled) }
+            return
+        }
+
+        _state.update { it.copy(installState = InstallState.Installing(progress = 0)) }
+        val job = viewModelScope.launch {
+            emulateInstall()
+        }
+        installJob = job
+        job.invokeOnCompletion { cause ->
+            if (cause != null && installJob === job) {
+                _state.update { it.copy(installState = InstallState.NotInstalled) }
+            }
+        }
+    }
+
+    private suspend fun emulateInstall() {
+        for (progress in 0..100 step INSTALL_PROGRESS_STEP) {
+            delay(INSTALL_PROGRESS_DELAY_MS)
+            coroutineContext.ensureActive()
+            _state.update { state ->
+                if (state.installState !is InstallState.Installing) {
+                    state
+                } else {
+                    state.copy(installState = InstallState.Installing(progress))
+                }
+            }
+        }
+        coroutineContext.ensureActive()
+        _state.update { state ->
+            if (state.installState !is InstallState.Installing) {
+                state
+            } else {
+                state.copy(installState = InstallState.Installed)
+            }
+        }
+    }
+
     private fun loadDetails(gameId: String) {
+        installJob?.cancel()
+        installJob = null
         viewModelScope.launch {
             _state.update {
-                it.copy(gameId = gameId, isLoading = true, isMissing = false, errorMessage = null)
+                it.copy(
+                    gameId = gameId,
+                    isLoading = true,
+                    isMissing = false,
+                    errorMessage = null,
+                    installState = InstallState.NotInstalled,
+                )
             }
             val showcasePages = gamesRepository.getShowcasePages()
             try {
@@ -137,5 +201,7 @@ class DetailViewModel @Inject constructor(
 
     private companion object {
         const val LOAD_ERROR = "Не удалось загрузить приложение"
+        const val INSTALL_PROGRESS_STEP = 5
+        const val INSTALL_PROGRESS_DELAY_MS = 150L
     }
 }
