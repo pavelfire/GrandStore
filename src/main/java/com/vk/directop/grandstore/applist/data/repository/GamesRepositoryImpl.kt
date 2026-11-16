@@ -1,16 +1,16 @@
 package com.vk.directop.grandstore.applist.data.repository
 
 import com.vk.directop.grandstore.applist.data.mapper.GameMapper
-import com.vk.directop.grandstore.applist.data.source.HardcodedGamesDataSource
 import com.vk.directop.grandstore.applist.domain.model.Game
 import com.vk.directop.grandstore.applist.domain.repository.GamesRepository
+import com.vk.directop.grandstore.data.remote.CatalogApi
 import javax.inject.Inject
 
 class GamesRepositoryImpl @Inject constructor(
-    private val dataSource: HardcodedGamesDataSource,
+    private val api: CatalogApi,
     private val mapper: GameMapper,
 ) : GamesRepository {
 
-    override fun getGames(): List<Game> =
-        dataSource.getGames().map(mapper::toDomain)
+    override suspend fun getGames(): List<Game> =
+        api.getCatalog().map(mapper::toDomain)
 }
